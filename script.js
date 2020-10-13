@@ -1,134 +1,93 @@
-const question = document.querySelector('#question')
-const choices = Array.from(document.querySelectorAll('.choice-text'));
-const progressText = document.querySelector('#progressText');
-const scoreText = document.querySelector('#score');
-const progressBarFull = document.querySelector('#progressBarFull');
+//Declare the UI elements
+var ul = document.getElementById('ul')
+var nextButton = document.getElementById('btnNext');
+var quizbox = document.getElementById('questionBox')
+var opt1 = document.getElementById('opt1')
+var opt2 = document.getElementById('opt2')
+var opt3 = document.getElementById('opt3')
+var opt4 = document.getElementById('opt4')
 
-let currentQuestion = {}
-let acceptingAnswers = true
-let score = 0 
-let questionCounter = 0
-let availableQuestions = []
+var app={
+        questions:[
+            {
+                q:'What does CSS stand for',
+                options: ['Computer Science Skill', 'Cascading Style Sheets', 'Crucial Service Squad', 'Creative Styles Sheet'],
+                answer:2
+            },
+            {
+                q:'Which HTML attribute is used to define inline styles',
+                options: ['font', 'style', 'class', 'styles'],
+                answer:4
+            },
+            {
+                q:'What CSS property controls text size',
+                options: ['text-size', 'font-style', 'font-size', 'text-style'],
+                answer:3
+            }, 
+            {
+                q:'Where in an HTML document is the correct place to refer to an external style sheet',
+                options: ['In the head section', 'At the end of the document', 'In the body section', 'At the top of the document'],
+                answer:1
+            }                                   
+        ],
+        index:0,
+        
+        load:function(){
+            if(this.index<=this.questions.length-1){
+                quizbox.innerHTML=this.index+1 + ". " +this.questions[this.index].q;
+                opt1.innerHTML=this.questions[this.index].options[0];
+                opt2.innerHTML=this.questions[this.index].options[1];
+                opt3.innerHTML=this.questions[this.index].options[2];
+                opt4.innerHTML=this.questions[this.index].options[3];
+            }
+            else {
+                quizbox.innerHTML="Quiz Completed!";
+                ul.style.display="none";
+                nextButton.style.display="none";
+            }
+        },
 
-let questions = [
-    {
-        question: "Which one is an animal",
-        choice1: 'Tree',
-        choice2: 'Car',
-        choice3: 'Cat',
-        choice4: 'Wheel',
-        answer: 'Cat', 
-    },
-    {
-        question: "Which one is an animal",
-        choice1: 'Tree',
-        choice2: 'Car',
-        choice3: 'Cat',
-        choice4: 'Wheel',
-        answer: 'Cat', 
-    },
-    {
-        question: "Which one is an animal",
-        choice1: 'Tree',
-        choice2: 'Car',
-        choice3: 'Cat',
-        choice4: 'Wheel',
-        answer: 'Cat', 
-    },
-    {
-        question: "Which one is an animal",
-        choice1: 'Tree',
-        choice2: 'Car',
-        choice3: 'Cat',
-        choice4: 'Wheel',
-        answer: 'Cat', 
-    },
-    {
-        question: "Which one is an animal",
-        choice1: 'Tree',
-        choice2: 'Car',
-        choice3: 'Cat',
-        choice4: 'Wheel',
-        answer: 'Cat', 
-    },
-    {
-        question: "Which one is an animal",
-        choice1: 'Tree',
-        choice2: 'Car',
-        choice3: 'Cat',
-        choice4: 'Wheel',
-        answer: 'Cat', 
-    },
-    {
-        question: "Which one is an animal",
-        choice1: 'Tree',
-        choice2: 'Car',
-        choice3: 'Cat',
-        choice4: 'Wheel',
-        answer: 'Cat', 
-    },
-      
-]
-const SCORE_POINTS = 100
-const MAX_QUESTIONS = 6
+        next: function(){
+            this.index++;
+            this.load();
+        },
 
-    startQuiz = () => {
-        questionCounter = 0
-        score = 0
-        availableQuestions = {...questions}
-        getNewQuestion()
-    }
-
-    getNewQuestion = () => {
-        if(availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS) {
-            localStorage.setItem('mostRecentScore', score)
-
-            return window.location.assign('/end.html')
+        check: function(ele){
+            var id=ele.id.split('');
+            if(id[id.length-1]==this.questions[this.index].answer){
+                this.score++;
+                ele.className="correct";
+                this.scoreCard();
+            }
+            else{
+                ele.className="wrong";
+            }
+        },
+        preventClick:function(){
+            for(let i=0; i<ul.children.length; i++){
+                ul.children[i].style.pointerEvents="none";
+            }
+        },
+        allowClick:function(){
+            for(let i=0; i<ul.children.length; i++){
+                ul.children[i].style.pointerEvents="auto";
+                ul.children[i].className=''
+            }
+        },
+        score:0,
+        scoreCard:function(){
+            scoreCard.innerHTML=this.score + "/" + this.questions.length;
         }
-        
-        questionCounter++
-        progressText.innerText = 'Question $(questionCounter) of $(MAX_QUESTIONS)'
-        progressBarFull.style.width = '$((questionCounter/MAX_QUESTIONS) = 100)%'
+}
 
-        const quesionsIndex = Math.floor (Math.random() * availableQuestions.length)
-        currentQuestion = availableQuestions [questionIndex]
-        question.innerText = currentQuestion.question
+window.load=app.load();
 
-        choices.forEach(choice => {
-            const number = choice.dataset ['number']
-            choice.innerText = currentQuestion['choice' + number]
-        })
-    
-        availableQuestions.splice(questionIndex, 1)
+function button(ele){
+    app.check(ele);
+    app.preventClick();
+}
 
-        acceptingAnswers = true
-
-    }
-
-    choices.forEach(choice => {
-        choice.addEventListener('click', e => {
-        if(!acceptingAnswers) return
-        
-        acceptingAnswers = false
-        const selectedChoice = e.target
-        const selectedAnswer = SelectedChoice.dataset ['number']
-
-        let classToApply = selectedAnswer == currentQuestion.anwser ? 'correct' : 'incorrect'
-        
-        if(classToApply ==='correct') {
-            incrementScore(SCORE_POINTS)
-        }
-
-        selectedChoice.parentElement.classList.add(classToApply)
-
-        setTimeout;{() => {
-            selectedChoice.parentElement.classList.remove(classToApply)
-            getNewQuestion()
-
-        }, 1000}
-
-    })
- })
-
-
-   
+function next(){
+    app.next();
+    app.allowClick();
+}

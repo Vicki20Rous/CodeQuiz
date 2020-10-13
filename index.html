@@ -3,57 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet"  href="styles.css"/>
-    <link rel="shortcut icon" href="assets/images/favicon.ico"/>
+    <link href="styles.css" rel="stylesheet">
+    <link rel=”shortcut icon” href = “images/favicon.ico”>
+    <script defer src="script.js"></script>
+    <title>Code Quiz</title>
 </head>
 <body>
-    <div class= "container">
-        <div id="home" class="flex-column flexcenter">
-            <h1>Test Your Coding Knowledge</h1>
-            <a href="/codequiz.html" class="btn">Start</a>
-            <a href="/highscores.html" id="highscore-btn" class="btn">High Scores</a>
+    <div class="quiz-wrapper">
+        <div id="questionBox" class="question">
+            Sample Question
         </div>
-
-        <div class="container">
-            <h1 id="quiz" class="float-left flex-column">
-                <div id="hud">
-                    <h1 class="hud-item">
-                        <p id="progressText" class="hud-prefix">
-                            Question
-                        </p>
-                        <div id="progressBar">
-                            <div id="progressBarFull"></div>
-                        </div>
-                    </div>
-                </h1 class="hud-item">
-                    <p class="hud-prefix">
-                        Score
-                    </p>
-                    <h2 class="hud-main-text" id="score">
-                        0
-                    </h2>
+       <div class="options">
+        <ul id="ul">
+            <li id="opt1" onclick="button(this)"></li>
+            <li id="opt2" onclick="button(this)"></li>
+            <li id="opt3" onclick="button(this)"></li>
+            <li id="opt4" onclick="button(this)"></li>
+          </ul>
+        </div>
+        <div class="score">
+            <div class="next">
+                <button id="btnNext" type="button" onclick="next()">
+                Next
+                </button>
+            </div>
+            <div class="score-card">
+                SCORE: <span id="scoreCard">0</span>
             </div>
         </div>
-        <h1 id="question">Add question Here</div>
-        <div class="choice-container">
-            <p class="choice-prefix">A</p>
-            <p class="choice-text"data-number="1">Choice</p>
-        </div>
-        <div class="choice-container">
-            <p class="choice-prefix">B</p>
-            <p class="choice-text"data-number="2">Choice</p>
-        </div>
-        <div class="choice-container">
-            <p class="choice-prefix">C</p>
-            <p class="choice-text"data-number="3">Choice</p>
-        </div>
-        <div class="choice-container">
-            <p class="choice-prefix">D</p>
-            <p class="choice-text"data-number="4">Choice</p>
-        </div>
-        <script src="script.js"></script>
-        
     </div>
-    </body>
+</body>
 </html>
