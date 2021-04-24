@@ -1,93 +1,139 @@
 //Declare the UI elements
-var ul = document.getElementById('ul')
-var nextButton = document.getElementById('btnNext');
-var quizbox = document.getElementById('questionBox')
-var opt1 = document.getElementById('opt1')
-var opt2 = document.getElementById('opt2')
-var opt3 = document.getElementById('opt3')
-var opt4 = document.getElementById('opt4')
+const start = document.getElementById("start");
+const quiz = document.getElementById("quiz");
+const question = document.getElementById("question");
+const qImg = document.getElementById("qImg");
+const choiceA = document.getElementById("A");
+const choiceB = document.getElementById("B");
+const choiceC = document.getElementById("C");
+const choiceD = document.getElementById("D");
+const counter = document.getElementById("counter");
+const timeGauge = document.getElementById("timeGauge");
+const progress = document.getElementById("progress");
+const scoreDiv = document.getElementById("scoreContainer");
 
-var app={
-        questions:[
+let questions = [
             {
-                q:'What does CSS stand for',
-                options: ['Computer Science Skill', 'Cascading Style Sheets', 'Crucial Service Squad', 'Creative Styles Sheet'],
-                answer:2
-            },
-            {
-                q:'Which HTML attribute is used to define inline styles',
-                options: ['font', 'style', 'class', 'styles'],
-                answer:4
-            },
-            {
-                q:'What CSS property controls text size',
-                options: ['text-size', 'font-style', 'font-size', 'text-style'],
-                answer:3
-            }, 
-            {
-                q:'Where in an HTML document is the correct place to refer to an external style sheet',
-                options: ['In the head section', 'At the end of the document', 'In the body section', 'At the top of the document'],
-                answer:1
+                question :"What does CSS stand for",
+                imgSrc : "img/andybelievesinyou.png",
+                choiceA : "Correct",
+                choiceB : "Wrong",
+                choiceC : "Wrong",
+                choiceD : "Wrong",
+                correct : "A" 
+            },{
+                question :"What does CSS stand for",
+                imgSrc : "img/andybelievesinyou.png",
+                choiceA : "Wrong",
+                choiceB : "Wrong",
+                choiceC : "Wrong",
+                choiceD : "Correct",
+                correct : "D" 
+            },{
+                question :"What does CSS stand for",
+                imgSrc : "img/andybelievesinyou.png",
+                choiceA : "Wrong",
+                choiceB : "Correct",
+                choiceC : "Wrong",
+                choiceD : "Wrong",
+                correct : "B" 
+            
             }                                   
-        ],
-        index:0,
+        ];
+       
+    const lastQuestion = questions.length - 1;
+    let runningQuestion = 0;
+    let count = 0;
+    const questionTime = 10;
+    const gaugeWidth = 150;
+    const gaugeUnit = gaugeWidth / questionTime;
+    let TIMER;
+    let score = 0;
+
         
-        load:function(){
-            if(this.index<=this.questions.length-1){
-                quizbox.innerHTML=this.index+1 + ". " +this.questions[this.index].q;
-                opt1.innerHTML=this.questions[this.index].options[0];
-                opt2.innerHTML=this.questions[this.index].options[1];
-                opt3.innerHTML=this.questions[this.index].options[2];
-                opt4.innerHTML=this.questions[this.index].options[3];
-            }
-            else {
-                quizbox.innerHTML="Quiz Completed!";
-                ul.style.display="none";
-                nextButton.style.display="none";
-            }
-        },
-
-        next: function(){
-            this.index++;
-            this.load();
-        },
-
-        check: function(ele){
-            var id=ele.id.split('');
-            if(id[id.length-1]==this.questions[this.index].answer){
-                this.score++;
-                ele.className="correct";
-                this.scoreCard();
-            }
-            else{
-                ele.className="wrong";
-            }
-        },
-        preventClick:function(){
-            for(let i=0; i<ul.children.length; i++){
-                ul.children[i].style.pointerEvents="none";
-            }
-        },
-        allowClick:function(){
-            for(let i=0; i<ul.children.length; i++){
-                ul.children[i].style.pointerEvents="auto";
-                ul.children[i].className=''
-            }
-        },
-        score:0,
-        scoreCard:function(){
-            scoreCard.innerHTML=this.score + "/" + this.questions.length;
+    function renderQuestion(){
+        let q = questions[runningQuestion];
+            
+            question.innerHTML = "<p>" + q.question +"</p>";
+            qImg.innerHTML = "<img src="+ q.imgSrc +">";
+            choiceA.innerHTML = q.choiceA;
+            choiceB.innerHTML = q.choiceB;
+            choiceC.innerHTML = q.choiceC;
+            choiceD.innerHTML = q.choiceD;
         }
+
+    start.addEventListener("click", startQuiz);
+
+    function startQuiz(){
+        start.style.display = "none";
+        renderQuestion();
+        quiz.style.display = "block";
+        renderProgress();
+        renderCounter();
+        TIMER = setInterval(renderCounter, 1000);
+    }
+
+    function renderProgress(){
+        for(let qIndex = 0; qIndex <= lastQuestion; qIndex++){
+            progress.innerHTML += "<div class='prog' id=" + qIndex + "></div>";
+        }
+    }
+
+    
+    function renderCounter(){
+        if(count <= questionTime){
+            counter.innerHTML = count;
+            timeGauge.style.width = count * gaugeUnit + "px";
+            count++
+        }else{
+            count = 0;
+            answerIsWrong();
+        if( runningQuestion < lastQuestion){
+            runningQuestion++;
+            renderQuestion();
+        }else{ 
+            clearInterval(TIMER);
+            scoreRender();
+        }
+    }
 }
 
-window.load=app.load();
+function checkAnswer(answer){
+    if( answer == questions[runningQuestion].correct){
+        score++;
+        answerIsCorrect();
+    }else{
+        answerIsWrong();
+    }
+    count = 0;
+    if(runningQuestion < lastQuestion){
+        runningQuestion++;
+        renderQuestion();
 
-function button(ele){
-    app.check(ele);
-    app.preventClick();
+    }else{
+        clearInterval(TIMER);
+        scoreRender();
+    }
 }
 
-function next(){
-    app.next();
-    app.allowClick();
+function answerIsCorrect(){
+    document.getElementById(runningQuestion).style.backgroundColor = "green";
+}
+
+function answerIsWrong(){
+    document.getElementById(runningQuestion).style.backgroundColor = "red";
+}
+
+function scoreRender(){
+    scoreDiv.style.display = "block";
+
+    const scorePerCent = Math.round(100 * score / questions.length);
+
+    let img= ( scorePerCent >= 80 ) ? "img/1-Emoji-Party.jpg":
+             ( scorePerCent >= 60 ) ? "img/1-Emoji-Excitement.jpg":
+             ( scorePerCent >= 40 ) ? "img/1-Emoji-Why-No.jpg":
+             ( scorePerCent >= 20 ) ? "img/sad-face-emoji.png": "img/eaec38b87381bdc0a39f43d76f1fbe14.jpg";
+    
+    scoreDiv.innerHTML = "<img src=" + img +">";
+    scoreDiv.innerHTML += "<p>" + scorePerCent + "%</p>";   
 }
