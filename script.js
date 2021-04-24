@@ -14,29 +14,46 @@ const scoreDiv = document.getElementById("scoreContainer");
 
 let questions = [
             {
-                question :"What does CSS stand for",
+                question :"Which franchise moved to Kansas City and establish the Chiefs franchise?",
                 imgSrc : "img/andybelievesinyou.png",
-                choiceA : "Correct",
-                choiceB : "Wrong",
-                choiceC : "Wrong",
-                choiceD : "Wrong",
+                choiceA : "Dallas Texans",
+                choiceB : "Boston Patriots",
+                choiceC : "St. Louis Cardinals",
+                choiceD : "Baltimore Colts",
                 correct : "A" 
             },{
-                question :"What does CSS stand for",
+                question :"Who is the Chiefs Top Receiver on the 1969 Roster?",
                 imgSrc : "img/andybelievesinyou.png",
-                choiceA : "Wrong",
-                choiceB : "Wrong",
-                choiceC : "Wrong",
-                choiceD : "Correct",
+                choiceA : "Larry Smith",
+                choiceB : "Frank Pitts",
+                choiceC : "Homer Jones",
+                choiceD : "Otis Taylor",
                 correct : "D" 
             },{
-                question :"What does CSS stand for",
+                question :"What is the name of the Chiefs Home Stadium?",
                 imgSrc : "img/andybelievesinyou.png",
-                choiceA : "Wrong",
-                choiceB : "Correct",
-                choiceC : "Wrong",
-                choiceD : "Wrong",
+                choiceA : "Hard Rock Stadium",
+                choiceB : "Arrowhead Stadium",
+                choiceC : "Lambeau Field",
+                choiceD : "Gillette Stadium",
                 correct : "B" 
+            },{
+                question :"Who is the Chiefs starting Quarterback?",
+                imgSrc : "img/andybelievesinyou.png",
+                choiceA : "Aaron Rodgers",
+                choiceB : "Lamar Jackson",
+                choiceC : "Patrick MaHomes",
+                choiceD : "Deshaun Watson",
+                correct : "C" 
+
+            },{
+                question :"When was the last Super Bowl Championship did the Chiefs won?",
+                imgSrc : "img/andybelievesinyou.png",
+                choiceA : "Super Bowl 25",
+                choiceB : "Super Bowl 33",
+                choiceC : "Super Bowl 41",
+                choiceD : "Super Bowl 54",
+                correct : "D" 
             
             }                                   
         ];
@@ -129,10 +146,10 @@ function scoreRender(){
 
     const scorePerCent = Math.round(100 * score / questions.length);
 
-    let img= ( scorePerCent >= 80 ) ? "img/1-Emoji-Party.jpg":
-             ( scorePerCent >= 60 ) ? "img/1-Emoji-Excitement.jpg":
+    let img= ( scorePerCent >= 80 ) ? "img/chiefgiphy.gif":
+             ( scorePerCent >= 60 ) ? "img/chiefs-logo.jpg":
              ( scorePerCent >= 40 ) ? "img/1-Emoji-Why-No.jpg":
-             ( scorePerCent >= 20 ) ? "img/sad-face-emoji.png": "img/eaec38b87381bdc0a39f43d76f1fbe14.jpg";
+             ( scorePerCent >= 20 ) ? "img/sad-face-emoji.png": "img/giphy.gif";
     
     scoreDiv.innerHTML = "<img src=" + img +">";
     scoreDiv.innerHTML += "<p>" + scorePerCent + "%</p>";   
